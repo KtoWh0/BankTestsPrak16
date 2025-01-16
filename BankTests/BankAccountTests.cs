@@ -76,15 +76,20 @@ namespace BankTests
 
             Assert.AreEqual(expectedBalance, account.Balance, "Balance is not updated correctly after credit.");
         }
-        //Тест: Проверка большого дебетирования
+        //Тест: Попытка снять весь баланс и потом пополнить счёт
         [TestMethod]
-        public void Debit_LargeAmount_ShouldThrowException()
+        public void Debit_AllBalance_ThenCredit_ShouldUpdateBalanceCorrectly()
         {
-            double initialBalance = 100.0;
-            double debitAmount = 1000.0;
+            double initialBalance = 200.0;
+            double debitAmount = 200.0;
+            double creditAmount = 50.0;
+            double expectedBalance = 50.0;
             BankAccount account = new BankAccount("Test User", initialBalance);
 
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => account.Debit(debitAmount), "Exception not thrown when debiting large amount.");
+            account.Debit(debitAmount);
+            account.Credit(creditAmount);
+
+            Assert.AreEqual(expectedBalance, account.Balance, "Balance is not updated correctly after debit and credit.");
         }
     }
 }
